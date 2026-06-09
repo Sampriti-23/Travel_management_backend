@@ -9,10 +9,6 @@ const destinationSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  price:{
-    type:Number,
-    required:true
-  },
   locations: [{ type: mongoose.Schema.Types.ObjectId, ref: "Location" }],
 }
 );

@@ -1,20 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const tourpackageController = require("../../controller/tourpackageController/tourpackageController")
+const tourpackageController = require("../../controller/tourpackageController/tourpackageController");
+const upload = require("../../middleware/uploads");
 
-//create package
-router.post("/createpackage",tourpackageController.createpackage);
-
-//get all package
-router.get("/getpackage",tourpackageController.getallpackage);
-
-//get package by id
-router.get("/getpackage/:id",tourpackageController.getpackagebyid);
-
-//update package
-router.put("/updatepackage/:id",tourpackageController.updatepackage);
-
-//delete package
-router.delete("/deletepackage/:id",tourpackageController.deletepackage);
+router.post("/create", upload.single("image"), tourpackageController.createTourPackage);
+router.get("/getall", tourpackageController.getAllTourPackages);
+router.get("/getbyid/:id", tourpackageController.getTourPackageById);
+router.put("/update/:id", upload.single("image"), tourpackageController.updateTourPackage);
+router.delete("/delete/:id", tourpackageController.deleteTourPackage);
 
 module.exports = router;

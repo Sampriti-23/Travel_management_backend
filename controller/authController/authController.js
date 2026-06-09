@@ -7,9 +7,9 @@ const { SECRET_KEY } = require("../../Utils/config");
 // REGISTER
 exports.registerUser = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, phone, password } = req.body;
 
-    if (!name || !email  || !password) {
+    if (!name || !email || !phone || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -24,6 +24,7 @@ exports.registerUser = async (req, res) => {
     const user = await User.create({
       name,
       email,
+      phone,
       password:passwordHash,
     });
 
@@ -66,8 +67,8 @@ exports.loginUser = async (req, res) => {
         id: user._id,
         name: user.name,
         email: user.email,
+        phone: user.phone,
         role: user.role,
-        
       },
     });
   } catch (error) {
