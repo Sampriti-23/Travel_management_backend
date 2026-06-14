@@ -10,11 +10,12 @@ const authRoute = require("./routes/authRoutes/authRoutes");
 const destinationRoute = require("./routes/destinationRoute/destinationRoute");
 const locationRoute = require("./routes/locationRoute/locationRoute");
 const carRoute = require("./routes/carRoute/carRoute");
+const bookingRoute = require("./routes/bookingRoutes/bookingRoute");
+//const bookingRoutes = require("./routes/bookingRoutes/bookingRoute");
 const path = require('path');
-// const registrationRoute = require("./routes/registrationRoute/registrationRoute");
+
 const mongoose = require("mongoose");
 const cors= require("cors");
-// const bookingRoute = require("./routes/bookingRoutes/bookingRoute");
 
 dotenv.config();
 const app = express();
@@ -33,9 +34,10 @@ app.use("/api/auth",authRoute);
 app.use("/api/destination",destinationRoute);
 app.use("/api/location",locationRoute);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-app.use("/api/car", require("./routes/carRoute/carRoute"));
-// app.use("/api/registration",registrationRoute);   
-//app.use("/api",bookingRoute);
+app.use("/api/car", carRoute);
+app.use("/api/booking", bookingRoute);
+//app.use("/api/booking", bookingRoute);
+
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log(` Server running on port ${PORT}`));
