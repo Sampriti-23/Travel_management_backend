@@ -7,6 +7,7 @@ const upload = require("../../middleware/uploads"); // Imports your multer insta
    ROUTES MAP
 ======================== */
 router.post("/createcar", upload.single("image"), carController.createCar);
+router.get("/searchcar", carController.searchCar);
 router.get("/getcar", carController.getAllCars);
 router.get("/getcar/:id", carController.getCarById);
 router.put("/updatecar/:id", upload.single("image"), carController.updateCar);

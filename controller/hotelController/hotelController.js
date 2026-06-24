@@ -1,5 +1,8 @@
 const Hotel = require("../../models/Hotel");
 const Room = require("../../models/Room");
+const destination = require("../../models/Destination");
+const location = require("../../models/Location");
+const Car = require("../../models/Car");
 
 /* ========================
    CREATE HOTEL
@@ -38,6 +41,7 @@ exports.createhotel = async (req, res) => {
     });
   }
 };
+
 /* ========================
    GET ALL HOTELS
 ======================== */
@@ -68,6 +72,51 @@ exports.gethotel = async (req, res) => {
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+};
+
+exports.searchHotels = async (req, res) => {
+  try {
+    const { keyword } = req.query;
+
+    const hotels = await Hotel.find()
+      .populate("destination", "name")
+      .populate("location", "name")
+      .lean();
+
+    const filteredHotels = hotels.filter(
+      (hotel) =>
+        hotel.destination?.name
+          ?.toLowerCase()
+          .includes(
+            keyword.toLowerCase()
+          ) ||
+        hotel.location?.name
+          ?.toLowerCase()
+          .includes(
+            keyword.toLowerCase()
+          )
+    );
+
+    const formattedHotels =
+      filteredHotels.map((hotel) => ({
+        ...hotel,
+        destination:
+          hotel.destination?.name || "",
+        location:
+          hotel.location?.name || "",
+      }));
+
+    res.status(200).json({
+      message:
+        "Hotels fetched successfully",
+      data: formattedHotels,
+      status_code: 200,
+    });
+  } catch (err) {
+    res.status(500).json({
+      error: err.message,
+    });
   }
 };
 

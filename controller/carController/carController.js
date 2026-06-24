@@ -48,6 +48,45 @@ exports.getAllCars = async (req, res) => {
   }
 };
 
+exports.searchCar =async (req,res)=> {
+  try{
+
+    const{source,destination,seat} = req.query;
+
+    let filter={};
+    
+    if(source){
+      filter.source ={
+        $regex: source,
+        $options : 'i'
+      };
+    }
+
+    if(destination){
+      filter.destination ={
+        $regex: destination,
+        $options : 'i'
+      };
+    }
+
+    if(seat){
+      filter.seat={
+        $gte : Number(seat)
+      };
+    }
+    const cars = await Car.find(filter)
+res.status(200).json({
+      message: "Cars fetched successfully",
+      data: cars,
+      status_code: 200,
+    });
+  } catch (err) {
+    res.status(500).json({
+      error: err.message,
+    });
+  }
+};
+
 /* ========================
    GET SINGLE CAR BY ID
 ======================== */

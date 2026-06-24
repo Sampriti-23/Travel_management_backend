@@ -21,6 +21,11 @@ router.get(
   hotelcontroller.gethotel
 );
 
+router.get(
+  "/search",
+  hotelcontroller.searchHotels
+);
+
 /* ========================
    GET HOTEL BY ID
 ======================== */
