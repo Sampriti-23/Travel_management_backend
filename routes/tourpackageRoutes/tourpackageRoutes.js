@@ -5,6 +5,7 @@ const upload = require("../../middleware/uploads");
 
 router.post("/create", upload.single("image"), tourpackageController.createTourPackage);
 router.get("/getall", tourpackageController.getAllTourPackages);
+router.get("/searchPackage",tourpackageController.searchPackage);
 router.get("/getbyid/:id", tourpackageController.getTourPackageById);
 router.put("/update/:id", upload.single("image"), tourpackageController.updateTourPackage);
 router.delete("/delete/:id", tourpackageController.deleteTourPackage);

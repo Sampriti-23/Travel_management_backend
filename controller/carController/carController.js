@@ -50,9 +50,7 @@ exports.getAllCars = async (req, res) => {
 
 exports.searchCar =async (req,res)=> {
   try{
-
     const{source,destination,seat} = req.query;
-
     let filter={};
     
     if(source){

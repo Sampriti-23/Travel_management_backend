@@ -1,4 +1,7 @@
 const TourPackage = require("../../models/TourPackage");
+const Destination = require("../../models/Destination");
+const Location = require("../../models/Location");
+const Car = require("../../models/Car");
 
 /* ========================
    CREATE TOUR PACKAGE
@@ -14,7 +17,9 @@ exports.createTourPackage = async (req, res) => {
         if (req.body.location.startsWith("[")) {
           packageData.location = JSON.parse(req.body.location);
         } else {
-          packageData.location = req.body.location.split(",").map(id => id.trim());
+          packageData.location = req.body.location
+  .split(",")
+  .map(id => id.trim());
         }
       }
     } else {
@@ -76,6 +81,53 @@ exports.getAllTourPackages = async (req, res) => {
   } catch (err) {
     res.status(500).json({
       message: "Error fetching tour packages",
+      error: err.message,
+    });
+  }
+};
+
+exports.searchPackage = async (req, res) => {
+  try {
+    const { keyword } = req.query;
+
+    if (!keyword) {
+      const packages = await TourPackage.find()
+        .populate("destination", "name")
+        .populate("location", "name");
+
+      return res.status(200).json({
+        message: "Packages fetched successfully",
+        data: packages,
+        status_code: 200,
+      });
+    }
+
+    const destinations = await Destination.find({
+      name: {
+        $regex: keyword,
+        $options: "i",
+      },
+    });
+
+    const destinationIds = destinations.map((item) => item._id);
+
+    const packages = await TourPackage.find({
+      destination: {
+        $in: destinationIds,
+      },
+    })
+      .populate("destination", "name")
+      .populate("location", "name");
+
+    res.status(200).json({
+      message: "Packages fetched successfully",
+      data: packages,
+      status_code: 200,
+    });
+  } catch (err) {
+    console.log(err);
+
+    res.status(500).json({
       error: err.message,
     });
   }
