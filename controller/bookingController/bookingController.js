@@ -1,3 +1,6 @@
+const Car =require("../../models/Car");
+const Hotel = require("../../models/Hotel");
+const Room =require("../../models/Room");
 const Booking = require("../../models/Booking");
 const TourPackage = require("../../models/TourPackage");
 
@@ -7,10 +10,20 @@ const TourPackage = require("../../models/TourPackage");
 
 exports.createBooking = async (req, res) => {
   try {
-    const bookingData = { ...req.body };
+   const { 
+      type, hotel, room, tourPackage, car, 
+      checkIn, checkOut, numOfPeople, totalAmount 
+    } = req.body;
 
-    // 1. If it's a tour booking, deduct from available slots
-    if (bookingData.type === "tour" && bookingData.tourPackage) {
+    const bookingData= {
+      user,
+      type,
+      totalAmount,
+      status:"pending"
+    }
+
+    // If it's a tour booking, deduct from available slots
+    if (bookingData.type === "package" && bookingData.tourPackage) {
       const tour = await TourPackage.findById(bookingData.tourPackage);
       if (!tour) {
         return res.status(404).json({ message: "Tour package not found" });
@@ -24,6 +37,20 @@ exports.createBooking = async (req, res) => {
       // Deduct slots
       tour.availableSlots -= seatsRequested;
       await tour.save();
+
+      tourPackage.bookingData=tourPackage;
+      tourPackage.numOfPeople=seatsRequested;
+      tourPackage.checkIn=checkIn;
+    }
+    else if(bookingData.type=="hotel" && bookingData.hotel ){
+      const hotel = await Hotel.findById(bookingData.Hotel);
+      if(!hotel){
+        return res.status(400).json({message: "Hotel details not found"});
+      }
+
+
+
+
     }
 
     const booking = await Booking.create(bookingData);

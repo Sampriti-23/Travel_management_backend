@@ -14,6 +14,7 @@ const tourPackageSchema = new mongoose.Schema({
       required: true,
     }],
     car:{ type: mongoose.Schema.Types.ObjectId, ref: "Car" ,required: true},
+    hotel :{type: mongoose.Schema.Types.ObjectId, ref: "Hotel" ,required: true},
   durationDays: Number,
   pricePerPerson: Number,
   startDate: Date,

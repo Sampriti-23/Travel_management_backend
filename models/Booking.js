@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const bookingSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-  type: { type: String, enum: ["hotel", "tour", "car"], required: true },
+  type: { type: String, enum: ["hotel", "package", "car"], required: true },
   hotel: { type: mongoose.Schema.Types.ObjectId, ref: "Hotel" },
   room: { type: mongoose.Schema.Types.ObjectId, ref: "Room" },
   tourPackage: { type: mongoose.Schema.Types.ObjectId, ref: "TourPackage" },

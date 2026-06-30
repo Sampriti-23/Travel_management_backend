@@ -10,7 +10,6 @@ const roomSchema = new mongoose.Schema({
   pricePerNight: { type: Number, required: true },
   capacity: { type: Number, required: true },
   available: { type: Boolean, default: true },
-
   image: {
   type: String,
   default: ""
